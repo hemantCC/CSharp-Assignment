@@ -1,0 +1,285 @@
+﻿@model Assignment.MVC.Models.BusinessEntities.ProfileVM
+@{
+    ViewBag.Title = "UserProfile";
+    Layout = "~/Views/Shared/CustomLayout.cshtml";
+}
+
+<div class="container px-4">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 alert alert-dark mt-2">
+            <div class=" text-center">
+                <div>
+                    <span class=" display-4">UserProfile</span>
+                    @*<a class="btn btn-primary float-right" href="/User/EditProfile"><i class="fa fa-pencil" style="font-size:18px;"></i></a>*@
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#myModal" onclick="EditForm()">
+                     <i class="fa fa-pencil"></i>   Edit
+                    </button>
+                </div>
+                <img class="img-responsive" src="~/Content/Image/User-icon.png" style="max-width:200px;" />
+
+                <div class="mt-3">
+                    <strong>Email: </strong> <span id="email"></span>
+                </div>
+                <div class="mt-2">
+                    <strong>Name: </strong> <span id="Name"></span>
+                </div>
+                <div class="mt-2">
+                    <strong>Contact: </strong> <span id="Contact"></span>
+                </div>
+                <div class="mt-2">
+                    <strong>Address: </strong> <span id="Address"></span>
+                </div>
+                <div class="mt-2">
+                    <strong>City: </strong><span id="City"></span>
+                </div>
+                <div class="mt-2">
+                    <strong>State: </strong> <span id="State"></span>
+                </div>
+                <div class="mt-2">
+                    <strong>Country: </strong> <span id="Country"></span>
+                </div>
+                <div class="mt-2">
+                    <strong>ZipCode: </strong> <span id="ZipCode"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <img class="img-responsive mr-4" src="~/Content/Image/User-icon.png" style="max-width:80px;" />
+                <h5 class="modal-title display-4 text-center" id="exampleModalLabel">Edit Profile</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <form class="row">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" id="Id2" />
+
+
+                    <div class="col-md-12">
+
+                        <div class="form-group col-md-12 mt-4">
+                            <strong>Email</strong>
+                            <input type="text" id="Email2" class="form-control " disabled />
+                            @*<span id="Email2"></span>*@
+                        </div>
+
+                        <div class="row">
+
+                            <div class="form-group col-md-6 p-0">
+                                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2 " })
+                                <div class="col-md-12">
+                                    @Html.TextBoxFor(model => model.Name, new { Id = "Name2", @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+
+                            <div class="form-group col-md-6 p-0">
+                                @Html.LabelFor(model => model.Contact, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-12">
+                                    @Html.TextBoxFor(model => model.Contact, new { Id = "Contact2", @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.Contact, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="form-group col-md-6 p-0">
+                                @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-12">
+                                    @Html.TextBoxFor(model => model.Address, new { Id = "Address2", @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6 p-0">
+                                @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-12">
+                                    @Html.TextBoxFor(model => model.City, new { Id = "City2", @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="form-group col-md-6 p-0">
+                                @Html.LabelFor(model => model.State, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-12">
+                                    @Html.TextBoxFor(model => model.State, new { Id = "State2", @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6 p-0">
+                                @Html.LabelFor(model => model.Country, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-12">
+                                    @Html.TextBoxFor(model => model.Country, new { Id = "Country2", @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-6 p-0">
+                                @Html.LabelFor(model => model.ZipCode, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-12">
+                                    @Html.TextBoxFor(model => model.ZipCode, new { Id = "ZipCode2", @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.ZipCode, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" onclick="Update()">Save changes</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+    <script>
+        $(document).ready(function () {
+            //Gets The value for Profile Form
+            $.ajax({
+                url: "/User/GetCurrentUser",
+                method: "GET",
+                success: function (data) {
+                    console.log(data);
+                    $('#email').text(data.Email);
+                    $('#Name').text(data.Name);
+                    $('#Contact').text(data.Contact);
+                    $('#Address').text(data.Address);
+                    $('#City').text(data.City);
+                    $('#State').text(data.State);
+                    $('#Country').text(data.Country);
+                    $('#ZipCode').text(data.ZipCode);
+
+
+                },
+                error: function (error) {
+                    console.error(error);
+                }
+            })
+        })
+
+        //Sets Bootstrap Modal Values
+        function EditForm() {
+            $.ajax({
+                url: "/User/GetCurrentUser",
+                method: "GET",
+                success: function (data) {
+                    console.log(data);
+                    $('#Id2').val(data.Id);
+                    $('#Name2').val(data.Name);
+                    $('#Email2').val(data.Email);
+                    $('#Contact2').val(data.Contact);
+                    $('#Address2').val(data.Address);
+                    $('#City2').val(data.City);
+                    $('#State2').val(data.State);
+                    $('#Country2').val(data.Country);
+                    $('#ZipCode2').val(data.ZipCode);
+                },
+                error: function (error) {
+                    console.error(error);
+                }
+            })
+        }
+
+        //Sets the antiForgery Token for the request
+        var addAntiForgeryToken = function (data) {
+            data.__RequestVerificationToken = $("input[name='__RequestVerificationToken']").val();
+            return data;
+        };
+
+        //Performs Profile Update
+        function Update() {
+           
+            var token = $("input[name='__RequestVerificationToken']").val();  //Gets the hidden antiforgery value
+            var id = $('#Id2').val();
+            var name = $('#Name2').val();
+            var email = $('#Email2').val();
+            var contact = $('#Contact2').val();
+            var address = $('#Address2').val();
+            var city = $('#City2').val();
+            var state = $('#State2').val();
+            var country = $('#Country2').val();
+            var zipCode = $('#ZipCode2').val();
+            var input = {
+                Id: id,
+                Name: name,
+                Email: email,
+                Contact: contact,
+                Address: address,
+                City: city,
+                State: state,
+                Country: country,
+                ZipCode: zipCode
+            };
+            $.ajax({
+                url: "/User/EditProfile",
+                method: "POST",
+                data: addAntiForgeryToken(input),
+                dataType: "json",
+                contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+                success: function (data) {
+                    if (data == "success") {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Profile Updated!',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                        window.location.reload();
+                        $('#myModal').modal('hide');
+                    }
+                },
+                error: function (jqxhr, status, exception) {
+                    console.log('Exception : ' + exception);
+                }
+            })
+        }
+
+
+    </script>
+}
+
+@{
+    if (TempData["Login"] != null)
+    {
+        <script type="text/javascript">
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Login Successful',
+                showConfirmButton: false,
+                timer: 1500
+            })
+
+        </script>
+    }
+}
+

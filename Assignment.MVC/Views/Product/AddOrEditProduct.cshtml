@@ -1,0 +1,124 @@
+﻿@model Assignment.MVC.Models.BusinessEntities.ProductVM
+
+@{
+    ViewBag.Title = ViewBag.Heading;
+    Layout = "~/Views/Shared/CustomLayout.cshtml";
+}
+
+
+<style>
+    .TArea {
+        width: 100%
+    }
+</style>
+
+    <h2 class="text-center display-4">@ViewBag.Heading</h2>
+
+    <hr />
+    <div class="container px-4">
+        @using (Html.BeginForm("AddOrEditProduct", "Product", FormMethod.Post, new { enctype = "multipart/form-data", @class = "row" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="col-md-6">
+
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                <div class="form-group ">
+                    <strong>Name:</strong>
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+
+                </div>
+
+                <div class="form-group">
+                    <strong>Category:</strong>
+                    @Html.DropDownListFor(Model => Model.Category, new List<SelectListItem>
+                              {
+                                   new SelectListItem { Text = "Cloths", Value = "Cloths"  },
+                                   new SelectListItem { Text = "Grocery", Value = "Grocery"},
+                                   new SelectListItem { Text = "HouseKeeping", Value = "HouseKeeping"},
+                                   new SelectListItem { Text = "Electric", Value = "Electric"},
+                                   new SelectListItem { Text = "Stationary", Value = "Stationary"},
+                              }, "Select Category", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <strong>Code:</strong>
+                    @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <strong>Price:</strong>
+                    @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                </div>
+
+
+                <div><strong>Description:</strong></div>
+                <div>
+                    @Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { @class = "form-control TArea" } })
+                </div>
+                <div>
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                </div>
+
+
+                <div class="form-group">
+                    <strong>Status:</strong>
+                    @Html.RadioButtonFor(m => m.Status, "In Stock") In Stock
+                    @Html.RadioButtonFor(m => m.Status, "Out Of Stock") Out Of Stock
+                    @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                </div>
+
+
+            </div>
+            <div class="col-md-6">
+
+                <div class="form-group">
+                    <strong>Discount:</strong>
+
+                    @Html.EditorFor(model => model.Discount, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Discount, "", new { @class = "text-danger" })
+                </div>
+
+
+                <div class="form-group">
+                    <strong>Upload Product Image:</strong>
+                    <input type="file" name="ImageFile" accept="Image/*" onchange="PreviewImage(this);" />
+                    <img id="Image1" class="img-fluid" style="max-height:250px;"/>
+                    @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group float-right">
+                    <div class="col-md-12">
+                        <input type="submit" value="Add Product" class="btn btn-success" />
+                        <a href="/Product/Index" class="btn btn-danger mr-2"><i class="fa fa-angle-double-left"></i> Back</a>
+                    </div>
+                </div>
+            </div>
+
+        }
+    </div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        function PreviewImage(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#Image1').prop('src', e.target.result)
+                        .width(400)
+                        .height(400);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+}

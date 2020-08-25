@@ -1,0 +1,7 @@
+                   --------------------- Error(2020-06-19 15:21:16.3284)INSPIRON-------------------- 
+                   
+                   Exception Type:System.Exception
+                   Exception Message:Exception of type 'System.Exception' was thrown.
+                   Stack Trace:
+                   Additional Info:Error occured in Home controller Index Action
+                   

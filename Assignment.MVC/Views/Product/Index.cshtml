@@ -1,0 +1,306 @@
+﻿@model IEnumerable<Assignment.MVC.Models.BusinessEntities.ProductVM>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+
+@{
+    if (TempData["NoDeleteItems"] != null)
+    {
+        <script type="text/javascript">
+            Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                title: 'No Items To Delete',
+                showConfirmButton: false,
+                timer: 1500
+            })
+
+        </script>
+    }
+    if (TempData["Login"] != null)
+    {
+        <script type="text/javascript">
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Login Successful',
+                showConfirmButton: false,
+                timer: 1500
+            })
+
+        </script>
+    }
+}
+<h1 class="display-4 text-center">Products</h1>
+<!-- Button trigger modal -->
+@*<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+        <i class="fa fa-plus"></i> Add Product
+    </button>*@
+<a class="btn btn-outline-success mb-2 ml-2" href="/Product/AddOrEditProduct"><i class="fa fa-plus"></i> Add Product</a>
+
+    @using (Html.BeginForm("DeleteMultiple", "Product", FormMethod.Post, new { id = "MyForm", @class = "row mx-2" }))
+    {
+        @Html.AntiForgeryToken()
+        <table class="table table-bordered table-striped table-responsive-sm table-responsive-md">
+            <thead>
+                <tr>
+                    <th>
+                        <strong>Product</strong>
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Category)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Code)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Price)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Description)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Status)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Discount)
+                    </th>
+                    <th><strong>Edit</strong></th>
+                    <th>
+                        <button class="btn btn-danger" type="button" onclick="return sure()"><i class="fa fa-trash"></i></button>
+                    </th>
+
+                </tr>
+            </thead>
+
+
+            <tbody id="SetProductList">
+
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <img src="@Url.Content(item.Image)" width="100" height="100" alt="ProductImage" />
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Category)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Code)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Price)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Status)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Discount)
+                        </td>
+
+                        <td>
+                            @*<a href="@Html.Action("Edit", "AddOrEditProduct", new { id = item.Id })" class="btn btn-warning"><i class="fa fa-pencil"></i></a>*@
+                            @Html.ActionLink("Edit", "AddOrEditProduct", new { id = item.Id }, new { @class = "btn btn-warning" })
+                            @*@Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                                <a class="btn btn-danger" onclick="Delete('@Url.Action("Delete","Product",new { id = @item.Id})')"><i class="fa fa-trash"></i></a>*@
+                        </td>
+                        <td>
+                            <input type="checkbox" name="DeleteId" id="@item.Id" value="@item.Id" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+<script>
+    function sure() {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.value) {
+                document.getElementById("MyForm").submit();
+            }
+
+        })
+    }
+</script>
+
+<!-- Modal -->
+@*<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <form id="form">
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-horizontal">
+                            <h4>tblProduct</h4>
+                            <hr />
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" , @id= "Name" } })
+                                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Category, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Category, new { htmlAttributes = new { @class = "form-control", @id = "Category" } })
+                                    @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Code, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control" , @id = "Code" } })
+                                    @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control", @id = "Price" } })
+                                    @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", @id = "Description" } })
+                                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control", @id = "Status" } })
+                                    @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Discount, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.Discount, new { htmlAttributes = new { @class = "form-control", @id = "Discount" } })
+                                    @Html.ValidationMessageFor(model => model.Discount, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="submit" value="Create" class="btn btn-default" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+@*@section Scripts{
+        <script>
+            $(document).ready(function () {
+                //$(window).load(function () {
+                $.get("/Product/GetAllProducts", null, Data);
+                function Data(Products) {
+                    var setData = $("#SetProductList");
+                    for (var i = 0; i < Products.length; i++) {
+                        var data = "<tr class='row" + Products[i].Id + "'>" +
+                            "<td>" + Products[i].Name + "</td>" +
+                            "<td>" + Products[i].Category + "</td>" +
+                            "<td>" + Products[i].Code + "</td>" +
+                            "<td>" + Products[i].Price + "</td>" +
+                            "<td>" + Products[i].Description + "</td>" +
+                            "<td>" + Products[i].Status + "</td>" +
+                            "<td>" + Products[i].Discount + "</td>" +
+                            "<td><a class='btn btn-danger' data-target='#exampleModalCenter' onclick='EditProduct('" + Products[i].Id + ")'>Edit</a>" + "</td>" +
+                            "</tr>";
+                        setData.append(data);
+                    }
+                }
+            });
+
+            function AddProduct() {
+                $("#form")[0].reset();
+                $("exampleModalCenter").modal();
+            }
+
+            function EditProduct(ProductId) {
+                var url = "/Product/GetProductById?Id=" + ProductId;
+                $("#exampleModalCenter").modal();
+
+                $.ajax({
+                    type: 'Get',
+                    url: url,
+                    success: function (response) {
+                        var obj = JSON.parse(response);
+                        $("Name").val(obj.Name);
+                        $("Category").val(obj.Category);
+                        $("Code").val(obj.Code);
+                        $("Price").val(obj.Price);
+                        $("Description").val(obj.Description);
+                        $("Status").val(obj.Status);
+                        $("Discount").val(obj.Discount);
+                    }
+
+                });
+            }
+
+            function Delete(url) {
+                if (confirm('Are you sure you want to delete this record?') == true) {
+                    debugger;
+                    $.ajax({
+                        type: 'POST',
+                        url: url,
+                        success: function (response) {
+
+                        }
+
+                    });
+                }
+            }
+        </script>
+    }*@
+
+
